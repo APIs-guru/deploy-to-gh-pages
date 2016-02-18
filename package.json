@@ -1,0 +1,24 @@
+{
+  "name": "deploy-to-gh-pages",
+  "version": "0.0.1",
+  "description": "Shell script to deploy dir to gh-pages",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/APIs-guru/deploy-to-gh-pages.git"
+  },
+  "keywords": [
+    "gh-pages",
+    "deploy"
+  ],
+  "contributors": [
+    "Ivan Goncharov <ivan.goncharov.ua@gmail.com> (http://apis.guru)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/APIs-guru/deploy-to-gh-pages/issues"
+  },
+  "homepage": "https://github.com/APIs-guru/deploy-to-gh-pages",
+  "bin": {
+    "deploy-to-gh-pages": "./deploy-to-gh-pages.sh"
+  }
+}
