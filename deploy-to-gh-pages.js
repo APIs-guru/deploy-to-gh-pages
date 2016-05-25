@@ -2,20 +2,37 @@
 'use strict';
 
 require('shelljs/global');
+var argv = require('yargs')
+  .boolean('update')
+  .argv;
+
+var prepareUpdate = require('./update').prepareUpdate;
 
 function safeOutput(str) {
   return str.replace(new RegExp(process.env.GH_TOKEN, 'g'), 'xxPASSxx');
 }
 
-function execAndLog(command) {
-  console.log('+ ' + safeOutput(command));
-  return exec(command);
+function safeExec(command) {
+  set('+v');
+  set('+e');
+  console.log(safeOutput(command));
+  var res = exec(command, {silent:true});
+  if (res.code == 0) {
+    console.log(safeOutput(res.stdout));
+  } else {
+    console.error(safeOutput(res.stderr));
+    process.exit(1);
+  }
+  set('-e');
+  set('-v');
+  return res;
 }
 
 set('-e');
+set('-v');
 
-if (process.argv.length < 3) {
-  console.error('Missed argument <folder>:\nUsage: deploy-to-gh-pages <folder>');
+if (argv._.length < 1) {
+  console.error('Missed argument <folder>:\nUsage: deploy-to-gh-pages [--update] <folder>');
   process.exit(1);
 }
 
@@ -24,25 +41,28 @@ if (!process.env.GH_TOKEN) {
   process.exit(1);
 }
 
-var folder = process.argv[2];
-var GH_REPO=execAndLog('git config --get remote.origin.url').stdout;
+var folder = argv._[0];
+var GH_REPO=exec('git config --get remote.origin.url').stdout;
 if (GH_REPO.substring(0, 8) !== 'https://') {
   console.log('This tool works only for https:// protocol');
   process.exit(1);
 }
 
 function doRelease() {
-  console.log('+ cd ' + folder);
-  cd(folder);
-  execAndLog('git init')
-  execAndLog('git config user.name "Travis-CI"');
-  execAndLog('git config user.email "travis@travis"');
+  if (argv.update) {
+    prepareUpdate(folder, GH_REPO);
+  }
 
-  execAndLog('git add .');
-  execAndLog('git commit -m "Deployed to Github Pages"');
+  cd(folder);
+  exec('git init')
+  exec('git config user.name "Travis-CI"');
+  exec('git config user.email "travis@travis"');
+
+  exec('git add .');
+  exec('git commit -m "Deployed to Github Pages"');
 
   var GH_URL= GH_REPO.replace('://', '://' + process.env.GH_TOKEN + '@').trim();
-  execAndLog('git push --force "' + GH_URL + '" master:gh-pages');
+  safeExec('git push --force "' + GH_URL + '" master:gh-pages');
 }
 
 try {

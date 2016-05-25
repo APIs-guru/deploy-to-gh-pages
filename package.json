@@ -21,5 +21,11 @@
   "homepage": "https://github.com/APIs-guru/deploy-to-gh-pages",
   "bin": {
     "deploy-to-gh-pages": "./deploy-to-gh-pages.js"
+  },
+  "dependencies": {
+    "yargs": "^4.7.1"
+  },
+  "devDependencies": {
+    "shelljs": "^0.7.0"
   }
 }
