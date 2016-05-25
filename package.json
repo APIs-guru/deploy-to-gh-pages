@@ -11,7 +11,8 @@
     "deploy"
   ],
   "contributors": [
-    "Ivan Goncharov <ivan.goncharov.ua@gmail.com> (http://apis.guru)"
+    "Ivan Goncharov <ivan.goncharov.ua@gmail.com> (http://apis.guru)",
+    "Roman Hotsiy <gotsijroman@gmail.com>"
   ],
   "license": "MIT",
   "bugs": {
@@ -19,6 +20,6 @@
   },
   "homepage": "https://github.com/APIs-guru/deploy-to-gh-pages",
   "bin": {
-    "deploy-to-gh-pages": "./deploy-to-gh-pages.sh"
+    "deploy-to-gh-pages": "./deploy-to-gh-pages.js"
   }
 }
