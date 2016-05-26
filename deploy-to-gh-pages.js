@@ -43,6 +43,7 @@ if (!process.env.GH_TOKEN) {
 
 var folder = argv._[0];
 var GH_REPO=exec('git config --get remote.origin.url').stdout;
+GH_REPO = GH_REPO && GH_REPO.trim();
 if (GH_REPO.substring(0, 8) !== 'https://') {
   console.log('This tool works only for https:// protocol');
   process.exit(1);
@@ -61,7 +62,7 @@ function doRelease() {
   exec('git add .');
   exec('git commit -m "Deployed to Github Pages"');
 
-  var GH_URL= GH_REPO.replace('://', '://' + process.env.GH_TOKEN + '@').trim();
+  var GH_URL= GH_REPO.replace('://', '://' + process.env.GH_TOKEN + '@');
   safeExec('git push --force "' + GH_URL + '" master:gh-pages');
 }
 
