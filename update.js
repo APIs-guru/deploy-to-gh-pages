@@ -7,5 +7,6 @@ exports.prepareUpdate = function(folder, repoUrl) {
   exec('git clone --depth=1 --branch=gh-pages ' + repoUrl + ' .');
   var relativeFolder = path.join('..', folder, '/');
   cp('-Rn', '.', relativeFolder); // copy, not overwrite
+  rm('-rf', path.join(relativeFolder, '.git'));
   cd('..');
 }

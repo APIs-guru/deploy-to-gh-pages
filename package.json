@@ -1,6 +1,6 @@
 {
   "name": "deploy-to-gh-pages",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Shell script to deploy dir to gh-pages",
   "repository": {
     "type": "git",
