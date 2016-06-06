@@ -32,7 +32,7 @@ set('-e');
 set('-v');
 
 if (argv._.length < 1) {
-  console.error('Missed argument <folder>:\nUsage: deploy-to-gh-pages [--update] <folder>');
+  console.error('Missed argument <folder>:\nUsage: deploy-to-gh-pages [--repo <repo>] [--update] <folder>');
   process.exit(1);
 }
 
@@ -42,14 +42,24 @@ if (!process.env.GH_TOKEN) {
 }
 
 var folder = argv._[0];
-var GH_REPO=exec('git config --get remote.origin.url').stdout;
-GH_REPO = GH_REPO && GH_REPO.trim();
-if (GH_REPO.substring(0, 8) !== 'https://') {
-  console.log('This tool works only for https:// protocol');
-  process.exit(1);
+
+function getRepoUrl() {
+  if (argv.repo) {
+    if (argv.repo.split('/').length !== 2)
+      throw Error('Repo should be specified as "<org_name|user_name>/<repo_name>"');
+    return 'https://github.com/' + argv.repo + '.git';
+  }
+
+  var repo = exec('git config --get remote.origin.url').stdout;
+  repo = repo && repo.trim();
+  if (repo.substring(0, 8) !== 'https://')
+    throw Error('This tool works only for https:// protocol');
+  return repo;
 }
 
 function doRelease() {
+  var GH_REPO = getRepoUrl();
+
   if (argv.update) {
     prepareUpdate(folder, GH_REPO);
   }
