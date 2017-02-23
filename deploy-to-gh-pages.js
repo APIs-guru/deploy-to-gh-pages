@@ -4,6 +4,7 @@
 require('shelljs/global');
 var argv = require('yargs')
   .boolean('update')
+  .boolean('local')
   .argv;
 
 var prepareUpdate = require('./update').prepareUpdate;
@@ -66,13 +67,19 @@ function doRelease() {
 
   cd(folder);
   exec('git init')
-  exec('git config user.name "Travis-CI"');
-  exec('git config user.email "travis@travis"');
+
+  if (!argv.local) {
+    exec('git config user.name "Travis-CI"');
+    exec('git config user.email "travis@travis"');
+  }
 
   exec('git add .');
   exec('git commit -m "Deployed to Github Pages"');
 
-  var GH_URL= GH_REPO.replace('://', '://' + process.env.GH_TOKEN + '@');
+  var GH_URL = GH_REPO;
+  if (!argv.local) {
+    GH_URL = GH_REPO.replace('://', '://' + process.env.GH_TOKEN + '@');
+  }
   safeExec('git push --force "' + GH_URL + '" master:gh-pages');
 }
 
