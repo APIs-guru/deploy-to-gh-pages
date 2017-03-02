@@ -37,7 +37,7 @@ if (argv._.length < 1) {
   process.exit(1);
 }
 
-if (!process.env.GH_TOKEN) {
+if (!arvg.local && !process.env.GH_TOKEN) {
   console.error('You need to setup GH_TOKEN environment variable')
   process.exit(1);
 }
