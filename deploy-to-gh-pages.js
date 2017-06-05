@@ -10,6 +10,7 @@ var argv = require('yargs')
 var prepareUpdate = require('./update').prepareUpdate;
 
 function safeOutput(str) {
+  if (!process.env.GH_TOKEN) return str;
   return str.replace(new RegExp(process.env.GH_TOKEN, 'g'), 'xxPASSxx');
 }
 
@@ -49,6 +50,10 @@ function getRepoUrl() {
     if (argv.repo.split('/').length !== 2)
       throw Error('Repo should be specified as "<org_name|user_name>/<repo_name>"');
     return 'https://github.com/' + argv.repo + '.git';
+  }
+
+  if (argv.local) {
+    return 'origin';
   }
 
   var repo = exec('git config --get remote.origin.url').stdout;
