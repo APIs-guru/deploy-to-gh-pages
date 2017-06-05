@@ -52,13 +52,9 @@ function getRepoUrl() {
     return 'https://github.com/' + argv.repo + '.git';
   }
 
-  if (argv.local) {
-    return 'origin';
-  }
-
   var repo = exec('git config --get remote.origin.url').stdout;
   repo = repo && repo.trim();
-  if (repo.substring(0, 8) !== 'https://')
+  if (!argv.local && repo.substring(0, 8) !== 'https://')
     throw Error('This tool works only for https:// protocol');
   return repo;
 }
@@ -85,6 +81,7 @@ function doRelease() {
   if (!argv.local) {
     GH_URL = GH_REPO.replace('://', '://' + process.env.GH_TOKEN + '@');
   }
+
   safeExec('git push --force "' + GH_URL + '" master:gh-pages');
 }
 
