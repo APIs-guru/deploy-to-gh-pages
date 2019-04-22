@@ -23,9 +23,8 @@
     "deploy-to-gh-pages": "./deploy-to-gh-pages.js"
   },
   "dependencies": {
-    "yargs": "^4.7.1"
-  },
-  "devDependencies": {
+    "yargs": "^4.7.1",
     "shelljs": "^0.7.0"
-  }
+  },
+  "devDependencies": {}
 }
