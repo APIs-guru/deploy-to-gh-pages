@@ -1,6 +1,6 @@
 {
   "name": "deploy-to-gh-pages",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Shell script to deploy dir to gh-pages",
   "repository": {
     "type": "git",
@@ -23,8 +23,8 @@
     "deploy-to-gh-pages": "./deploy-to-gh-pages.js"
   },
   "dependencies": {
-    "yargs": "^4.7.1",
-    "shelljs": "^0.7.0"
+    "shelljs": "^0.7.0",
+    "yargs": "^4.7.1"
   },
   "devDependencies": {}
 }
